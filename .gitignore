@@ -1,0 +1,25 @@
+# Dependencies and generated caches
+**/node_modules/
+**/__pycache__/
+*.pyc
+*.log
+
+# Local/private trajectory backups
+**/data/*.private.json
+**/data/*.local.json
+**/data/private/
+
+# Local environment and editor files
+.env
+.env.*
+!.env.example
+.DS_Store
+.idea/
+.vscode/
+
+# Release archives
+*.zip
+*.skill
+!releases/
+!releases/*.zip
+!releases/*.skill

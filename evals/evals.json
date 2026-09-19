@@ -1,0 +1,48 @@
+{
+  "skill_name": "external-self",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "我小时候在武汉汉口生活。帮我找两三个真正属于 2007 年武汉日常生活的同期痕迹，最好不是大事件，而是当时可能看到、听到或经过的具体东西。",
+      "expected_output": "Retrieves the Wuhan childhood node, searches for verified contemporaneous 2007 artifacts, favors non-generic ordinary evidence, distinguishes publication/event dates, and directly displays 2-4 verified images or videos near the discoveries without changing personal data.",
+      "files": [],
+      "expectations": [
+        "Uses the Wuhan childhood node rather than generic China history",
+        "Presents only artifacts with dates, locations, and source identities",
+        "Distinguishes contemporaneous evidence from later retrospective sources",
+        "Favors ordinary concrete traces and explains personal relevance",
+        "Actively displays approximately 2-4 verified images or videos using host-native media syntax when suitable artifacts exist",
+        "Places each visual beside the finding it supports and captions it with date, source identity, and evidence status",
+        "Rejects stock, modern replacement, undated, decorative, or misattributed visuals instead of padding the answer",
+        "For video, provides an inline player or a verified clickable thumbnail with title, date, and source/channel",
+        "Does not write or propose writing external findings into places.json"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "我最近开始关注上海的城市更新和公共空间。结合我在武汉成长、后来到五角场上大学这几段经历，帮我看看现在有没有一个我没想到、但证据够硬的连接。没有就直说。",
+      "expected_output": "Retrieves multiple Wuhan and Shanghai nodes, forms a small number of connection hypotheses, searches minimally, verifies a real bridge, displays verified bridge media when available, labels inference, or honestly reports no strong connection.",
+      "files": [],
+      "expectations": [
+        "Uses at least two relevant Personal Context nodes",
+        "Tests a specific bridge rather than listing separate facts about Wuhan and Shanghai",
+        "Clearly separates external facts from inference or hypothesis",
+        "Displays media only when it directly supports the bridge, with date and provenance adjacent to the connection",
+        "Does not use logos, portraits, generic city images, or stock media as proof of the connection",
+        "Does not force a weak coincidence or weak visual when evidence is insufficient",
+        "Does not modify any Personal Context source"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "今天有点累，陪我随便聊两句吧。",
+      "expected_output": "Responds conversationally without loading Personal Context or searching the web.",
+      "files": [],
+      "expectations": [
+        "Does not retrieve trajectory nodes",
+        "Does not search the web",
+        "Responds naturally to ordinary conversation"
+      ]
+    }
+  ]
+}
