@@ -9,7 +9,7 @@
 - Frontend read endpoint: `GET /api/places`
 - Frontend write endpoint: `PUT /api/places`
 
-The `.skill` package contains this application and its current JSON snapshot. After extraction or installation, run it from the bundled app root with `npm ci` followed by `npm run dev`.
+The source package contains this application with an empty FACT array for first-use onboarding. After extraction or installation, the Skill starts it automatically when personal context is needed and no nodes exist; it may also be run manually from the bundled app root with `npm ci` followed by `npm run dev`.
 
 ## Separate active project binding
 

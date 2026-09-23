@@ -23,6 +23,20 @@ Good artifact classes include:
 - Buildings, shops, roads, routes, products, and institutions demonstrably present then.
 - Archived pages or captures with a traceable original URL and capture date.
 
+## Source ecosystems are peers
+
+Use the source ecosystem that best fits the artifact: original publishers, newspapers, libraries, museums, institutional collections, local-history repositories, community archives, web archives, and the Internet Archive are parallel candidates. Do not always search one of them first, and do not treat inclusion in any repository as proof of authenticity. Rank the resulting artifact by provenance and fit, not by which provider hosts it.
+
+When Internet Archive is a good artifact match, run the read-only helper instead of reconstructing provider-specific API logic in context:
+
+```text
+python <skill-directory>/scripts/internet_archive.py search "<compact query>" --from-year <year> --to-year <year> --limit 5
+python <skill-directory>/scripts/internet_archive.py item <identifier> [--find-text "<OCR phrase>"]
+python <skill-directory>/scripts/internet_archive.py wayback <url> --from-year <year> --to-year <year>
+```
+
+Search returns lightweight candidates. Run `item` only for a promising identifier, then use its normalized dates, provenance flags, canonical links, file roles, and presentation candidates. If the helper times out, continue with peer sources instead of retrying repeatedly. Results remain leads: verify the visible artifact or an independent source before making a claim. Do not infer public-domain status from archive hosting or bypass access restrictions.
+
 Avoid starting with broad queries such as “2007 中国大事” or “武汉历史”. Start with combinations such as year + district + artifact class, institution + year, transit route + year, school + event, or publication + issue date.
 
 ## Two-round workflow
@@ -60,7 +74,9 @@ For each media candidate, record privately:
 
 Search-result thumbnails are discovery leads, not evidence. Trace them to the original or a credible archive before displaying them.
 
-## Source priority
+## Evidence-form priority
+
+This hierarchy ranks evidence forms after discovery. It does not rank providers or require searching one source ecosystem before another.
 
 Prefer, in order:
 

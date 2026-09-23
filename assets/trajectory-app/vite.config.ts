@@ -4,7 +4,10 @@ import { dirname, resolve } from 'node:path'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import { defineConfig } from 'vite'
 
-const dataFile = resolve(process.cwd(), 'data/places.json')
+const dataFile = process.env.TRAJECTORY_DATA_FILE
+  ? resolve(process.env.TRAJECTORY_DATA_FILE)
+  : resolve(process.cwd(), 'data/places.json')
+const instanceToken = process.env.TRAJECTORY_INSTANCE_TOKEN ?? 'manual-start'
 
 async function readPlaces() {
   const content = await readFile(dataFile, 'utf8')
@@ -27,6 +30,7 @@ function sendJson(response: ServerResponse, status: number, body: unknown) {
 async function placesHandler(request: IncomingMessage, response: ServerResponse) {
   try {
     if (request.method === 'GET') {
+      response.setHeader('X-Trajectory-Instance', instanceToken)
       sendJson(response, 200, await readPlaces())
       return
     }

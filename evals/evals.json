@@ -43,6 +43,34 @@
         "Does not search the web",
         "Responds naturally to ordinary conversation"
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "帮我从过去的经历里找一个和我现在兴趣有关的意外连接。",
+      "expected_output": "When the selected FACT JSON is empty, detects the empty trajectory, starts or reuses the bundled local map web application, waits until it is reachable, gives the actual clickable URL and concise marker instructions, then pauses retrieval until the user confirms saving nodes.",
+      "files": [],
+      "expectations": [
+        "Checks the selected places.json and distinguishes an empty trajectory from a query no-match",
+        "Runs ensure_trajectory_map.py against the same FACT source",
+        "Uses the verified URL returned by the helper rather than guessing a port or linking to a static file",
+        "Explains that the user creates data by clicking the map and saving the five descriptive fields",
+        "Does not invent, interview for, or directly write trajectory nodes",
+        "Waits for user confirmation and then reruns retrieval from the same FACT source"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "我想找找 2007 年武汉当时能看到的报纸、杂志、电视或网页痕迹。互联网档案馆有合适材料就用，但别只盯着它。",
+      "expected_output": "Uses Internet Archive as one peer source ecosystem when artifact-fit is strong, delegates provider-specific search and normalization to scripts/internet_archive.py, verifies returned candidates from the visible artifact or another source, and does not confuse archive ingestion dates with artifact dates.",
+      "files": [],
+      "expectations": [
+        "Considers Internet Archive without making it the mandatory first or only source",
+        "Runs scripts/internet_archive.py instead of recreating detailed provider logic in the prompt",
+        "Treats script results, OCR, and uploader metadata as leads that require verification",
+        "Uses the script's normalized artifact dates, archive dates, provenance flags, and canonical links",
+        "Identifies the original publisher or creator and labels Internet Archive as repository when appropriate",
+        "Does not bypass access restrictions or assume archived material is public domain"
+      ]
     }
   ]
 }

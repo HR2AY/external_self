@@ -112,6 +112,18 @@ Open the URL printed by Vite, normally `http://localhost:5173/`. The local Vite 
 
 The retrieval and research workflow is read-only. It must never call the write endpoint or modify FACT data. Writes are allowed only when the user explicitly edits nodes through the map application or explicitly requests a data mutation.
 
+### Automatic first-use onboarding
+
+When the selected `places.json` is empty, the Skill uses the map as the required collection surface instead of interviewing the user in chat. The deterministic helper starts or reuses the local web app and returns its verified URL:
+
+```powershell
+python scripts/ensure_trajectory_map.py --data assets/trajectory-app/data/places.json
+```
+
+The helper can serve a separate active project's FACT file through the bundled UI. It passes that absolute path to Vite with `TRAJECTORY_DATA_FILE`, chooses a free local port when `5173` is unavailable, waits for the API to respond, and records per-data-source runtime state in the operating system's temporary directory.
+
+The Agent should present the returned URL as a clickable link and tell the user to click the map, complete the five descriptive fields, and save. After the user confirms completion, the Agent reruns retrieval against the same file and resumes the original task.
+
 ## Personal data model
 
 The three context classes are separate provenance domains:
@@ -122,7 +134,7 @@ The three context classes are separate provenance domains:
 
 Content must not migrate between these classes. External search results are temporary evidence and must not be persisted into FACT.
 
-The public `places.json` contains only fictional examples. Replace it only inside a private installation. Each node follows this shape:
+The public `places.json` starts as an empty array so first use enters map onboarding. User-created nodes remain private to the local installation. Each node follows this shape:
 
 ```json
 {

@@ -212,6 +212,8 @@ def main() -> int:
             "source": str(data_path),
             "source_class": "FACT",
             "read_only": True,
+            "node_count": len(nodes),
+            "trajectory_empty": len(nodes) == 0,
             "query": args.query,
             "mode": used_mode,
             "matches": [

@@ -39,6 +39,27 @@ Do not edit the bundled FACT JSON while performing memory retrieval or external 
 
 When the user has a separate active trajectory project, prefer that project's `data/places.json` by passing `--data <path>` instead of silently mixing it with the bundled snapshot.
 
+## Empty trajectory onboarding
+
+The map is a local web application, not a static file. Treat it as the data-entry surface for Personal Context.
+
+Whenever this Skill is activated for a request that needs personal trajectory context, determine whether the chosen FACT JSON contains any nodes before asking the user to describe their history in chat. The retriever reports `node_count` and `trajectory_empty`.
+
+If `trajectory_empty` is true:
+
+1. Run the startup helper against the same FACT source:
+
+   ```text
+   python <skill-directory>/scripts/ensure_trajectory_map.py --data <path-to-places.json>
+   ```
+
+2. The helper installs locked frontend dependencies when needed, reuses an already-running map for that data source, otherwise starts Vite in the background, waits for `/api/places`, and prints the actual local `url`. Do not guess the port and do not give the user a file path as though it were the map.
+3. Give the user a clickable link to that URL. Explain briefly: click a meaningful place on the map, fill in the place name, city, date, duration, and event, then choose **保存修改**. Encourage several important life nodes when useful, but do not require a fixed number.
+4. Stop the current retrieval task at this onboarding boundary. Ask the user to return after saving their markers; do not substitute chat-generated nodes and do not poll the private file while waiting.
+5. When the user says they have finished, rerun retrieval from the same FACT path. Continue the original request only after `trajectory_empty` becomes false.
+
+Starting the local map is operational setup, not permission for the AI to edit FACT. Only the user's actions in the map may create or change nodes. If startup fails, report the concrete prerequisite or log path returned by the helper instead of falling back to an unstructured biography interview.
+
 ## Decide whether this skill is needed
 
 Use the skill when the current conversation meaningfully involves the user's own past, a life stage, a place they lived, a personal event, an old artifact, or a request for an evidence-backed connection across personal nodes and the present.
@@ -67,7 +88,7 @@ Do not dump the whole JSON into context unless it has five or fewer records and 
 3. Use `--mode relevant` for a focused memory or known period. Use `--mode diverse` for a broad serendipity request that needs 2–5 nodes across different periods or cities.
 4. Inspect only the returned nodes. By default the script can use the bundled JSON. If a separate active project is in scope, locate its `data/places.json` read-only and rerun with `--data <path>`.
 5. If BACKGROUND or INFERENCE sidecars exist, read only sections connected to the selected node IDs, dates, cities, or events. Keep their labels visible in reasoning.
-6. If no node fits, say that the available personal context does not anchor the request well enough. Ask one narrow question only when it would materially change retrieval.
+6. If nodes exist but none fits, say that the available personal context does not anchor the request well enough. Ask one narrow question only when it would materially change retrieval. An empty trajectory is handled by the map onboarding workflow above, not as an ordinary no-match.
 
 The script is a lexical and timeline filter, not an oracle. Apply judgment after retrieval.
 
@@ -80,6 +101,7 @@ Search only when the answer requires evidence outside personal context.
 - Do not search to repeat facts already present in the user's nodes.
 - Do search when the user asks what the period felt like, asks to find a past object or trace, asks whether an external connection exists, or when a factual claim needs verification.
 - Prefer the environment's existing web search and browser capabilities. Do not bind the workflow to a provider-specific result format.
+- Treat suitable archives, libraries, institutional collections, original publishers, news databases, community sources, and the Internet Archive as peer source ecosystems. Choose among them by artifact fit and evidentiary quality; do not make any one provider a mandatory first stop or default authority.
 - Preserve source identity, dates, and links/citations in the host environment's native format.
 
 For Historical Evidence Retrieval, read and follow [references/historical-evidence.md](references/historical-evidence.md).
